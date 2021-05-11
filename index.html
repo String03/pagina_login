@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <title>Login</title>
+</head>
+<body>
+    <div id="main">
+        <div v-if="logueado">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Usuario</th>
+                        <th>E-mail</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="u in usuarios">
+                        <td>{{u.name}}</td>
+                        <td>{{u.username}}</td>
+                        <td>{{u.email}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div v-if="!logueado">
+           
+            <form>
+                <div class="mb-3">
+                    <label class="form-label">User</label>
+                    <input type="text" class="form-control" v-model="user">
+                    
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-control" v-model="password">
+                </div>
+               
+                <input type="button" class="btn btn-primary" value="Aceptar" v-on:click="login()"/>
+            </form>
+        </div>
+
+    </div>
+
+
+    
+<script>
+    var Api = 'https://jsonplaceholder.typicode.com/users';
+
+
+    new Vue({
+        el: '#main',
+        data:{
+            user: null,
+            password: null,
+            logueado: false,
+            usuarios: []
+        },
+        methods:{
+            login: function(){
+                if(this.user == '1234' && this.password == '1234'){
+                    this.logueado = true;
+                    return;
+                }
+                alert('error de credenciales');
+                
+            }
+        },
+        created: async function(){
+            try
+            {
+                var respuesta = await axios.get(Api);
+                this.usuarios = respuesta.data;
+            }
+            catch(e)
+            {
+                alert('error cargando datos');
+            }
+        }
+
+    })
+</script>
+
+</body>
+</html>
